@@ -6,10 +6,13 @@ import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
 import hello.core.member.MemoryMemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
+//@RequiredArgsConstructor //final 붙은 변수의 생성자 생성한다.
 public class OrderServiceImpl implements OrderService{
     /*
     private final MemberRepository memberRepository = new MemoryMemberRepository();
@@ -19,8 +22,31 @@ public class OrderServiceImpl implements OrderService{
     */
     private  final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy;
+
+    //@Autowired private MemberRepository memberRepository;
+    //@Autowired private discountPolicy;
+
+
+    /*
+    // set에 autowired를 하면 bean등록과 의존관계 주입이 따로
+    @Autowired(required=false)
+    public void setMemberRepository(MemberRepository memberRepository){
+        System.out.println("memberRepository = " + memberRepository);
+        this.memberRepository = memberRepository;
+    }
     @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    public void setDiscountPolicy(DiscountPolicy discountPolicy){
+        System.out.println("discountPolicy = " + discountPolicy);
+        this.discountPolicy = discountPolicy
+    }
+    */
+
+    @Autowired
+    public OrderServiceImpl(MemberRepository memberRepository, /*@Qualifier("mainDiscountPolicy")*/ DiscountPolicy discountPolicy) {
+        //생성자에 autowired를 하면 bean 등록하면서 의존관계주입이 같이 된다
+        System.out.println("memberRepository = " + memberRepository);
+        System.out.println("discountPolicy = " + discountPolicy);
+
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
